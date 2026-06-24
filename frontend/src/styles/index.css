@@ -1,0 +1,336 @@
+/* Premium CSS Design System - Smart Flashcard Generator */
+
+:root {
+  /* HSL Color Palette */
+  --bg-main: 224deg 25% 9%;       /* Slate background #0e121a */
+  --bg-surface: 223deg 20% 14%;   /* Panel background #1c212c */
+  --bg-surface-glass: 223deg 20% 14% / 60%; 
+  
+  --primary: 250deg 89% 65%;      /* Indigo Accent #6366f1 */
+  --primary-hover: 250deg 89% 58%;
+  --primary-glow: 250deg 89% 65% / 20%;
+  
+  --secondary: 180deg 100% 50%;    /* Cyan Glow #00ffff */
+  --secondary-glow: 180deg 100% 50% / 15%;
+  
+  --text-primary: 0deg 0% 98%;    /* White #fafafa */
+  --text-secondary: 220deg 14% 75%; /* Muted #b0b8c4 */
+  --text-muted: 220deg 10% 55%;     /* Muted secondary #7e8794 */
+  
+  --border-light: 220deg 15% 20% / 50%;
+  --border-glass: 0deg 0% 100% / 8%;
+  
+  /* Status Colors */
+  --success: 142deg 72% 43%;
+  --success-glow: 142deg 72% 43% / 15%;
+  --error: 346deg 87% 53%;
+  --error-glow: 346deg 87% 53% / 15%;
+  --warning: 38deg 92% 50%;
+  
+  /* Fonts */
+  --font-headings: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  /* Shadows & Radius */
+  --radius-lg: 16px;
+  --radius-md: 10px;
+  --radius-sm: 6px;
+  
+  --shadow-premium: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 50px -10px rgba(99, 102, 241, 0.15);
+  --shadow-panel: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+}
+
+/* Global Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: hsl(var(--bg-main));
+  color: hsl(var(--text-primary));
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--bg-main));
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border-light));
+  border-radius: var(--radius-sm);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary));
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headings);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: hsl(var(--text-primary));
+}
+
+/* Background Radial Glows */
+body::after {
+  content: "";
+  position: fixed;
+  top: -20%;
+  left: -20%;
+  width: 140%;
+  height: 140%;
+  background: radial-gradient(circle at 15% 15%, hsl(var(--primary-glow)) 0%, transparent 40%),
+              radial-gradient(circle at 85% 85%, hsl(var(--secondary-glow)) 0%, transparent 45%);
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* Interactive Components Defaults */
+input, textarea, select {
+  font-family: var(--font-body);
+  background-color: hsl(var(--bg-surface));
+  border: 1px solid hsl(var(--border-light));
+  border-radius: var(--radius-md);
+  color: hsl(var(--text-primary));
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  outline: none;
+  width: 100%;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: hsl(var(--primary));
+  box-shadow: 0 0 0 3px hsl(var(--primary-glow));
+}
+
+/* Button UI */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-headings);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  outline: none;
+  text-decoration: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, hsl(var(--primary)), #4f46e5);
+  color: hsl(var(--text-primary));
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, hsl(var(--primary-hover)), #4338ca);
+  box-shadow: 0 0 20px hsl(var(--primary-glow));
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: hsl(var(--bg-surface));
+  color: hsl(var(--text-primary));
+  border: 1px solid hsl(var(--border-light));
+}
+
+.btn-secondary:hover {
+  background: hsl(var(--border-light));
+  border-color: hsl(var(--text-secondary));
+}
+
+/* Glassmorphism Panel Helper */
+.glass-panel {
+  background-color: hsl(var(--bg-surface-glass));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid hsl(var(--border-glass));
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-premium);
+}
+
+/* Status Badges & Banners */
+.alert {
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid transparent;
+}
+
+.alert-error {
+  background-color: hsl(var(--error-glow));
+  border-color: hsl(var(--error) / 20%);
+  color: #ff8597;
+}
+
+.alert-success {
+  background-color: hsl(var(--success-glow));
+  border-color: hsl(var(--success) / 20%);
+  color: #64e393;
+}
+
+/* Loading Spinner */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Navbar Premium Styling */
+.navbar {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 1200px;
+  z-index: 1000;
+  padding: 12px 24px;
+  border-radius: var(--radius-lg);
+  border: 1px solid hsl(var(--border-glass));
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-family: var(--font-headings);
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: hsl(var(--text-primary));
+}
+
+.logo-icon {
+  color: hsl(var(--primary));
+  filter: drop-shadow(0 0 8px hsl(var(--primary-glow)));
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: hsl(var(--text-secondary));
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  color: hsl(var(--text-primary));
+  background-color: hsl(var(--border-light));
+}
+
+.nav-link.active {
+  color: hsl(var(--text-primary));
+  background-color: hsl(var(--primary) / 15%);
+  border: 1px solid hsl(var(--primary) / 25%);
+}
+
+.nav-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.nav-user-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-email {
+  font-size: 0.85rem;
+  color: hsl(var(--text-secondary));
+  background-color: hsl(var(--border-light));
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-logout {
+  background: transparent;
+  border: none;
+  color: hsl(var(--text-muted));
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-logout:hover {
+  color: #ff526d;
+  background-color: rgba(255, 82, 109, 0.1);
+}
+
+.logout-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Spacing utility for routing pages under fixed navbar */
+.page-wrapper {
+  padding-top: 120px;
+}
+
