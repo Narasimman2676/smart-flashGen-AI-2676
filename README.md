@@ -148,6 +148,25 @@ flash-generator/
 
 ---
 
+## 🌐 Deployment
+
+### Backend (Render.com)
+The Flask backend is deployed live at: `https://smart-flashgen-ai-2676.onrender.com`
+
+### Frontend (Vercel)
+The React (Vite) frontend is configured to build and deploy seamlessly to Vercel:
+1. **Vite Environment Variables**: In production mode, the API endpoint is configured using `VITE_API_URL` which points to `https://smart-flashgen-ai-2676.onrender.com` inside the production config ([`.env.production`](file:///c:/Users/Narasimman/OneDrive/Desktop/flash%20generator/frontend/.env.production)).
+2. **Client-Side Routing (`vercel.json`)**: To prevent `404` errors when reloading direct routes (like `/login`, `/dashboard`), the rewrite configuration is defined in [`vercel.json`](file:///c:/Users/Narasimman/OneDrive/Desktop/flash%20generator/frontend/vercel.json).
+
+**How to Deploy the Frontend to Vercel:**
+- Go to the Vercel Dashboard, and click **Add New > Project**.
+- Select and import your Git repository.
+- Under **Configure Project**, set the **Root Directory** as `frontend` (this is very important since your frontend is inside a subfolder).
+- Vercel will automatically detect the **Vite** preset and configure the build command (`npm run build`) and output directory (`dist`).
+- Click **Deploy**.
+
+---
+
 ### ⚙️ Low-Memory Deployment Optimization (e.g. Render.com Free Tier)
 
 By default, the backend loads heavy Natural Language Processing models (like `KeyBERT`, `t5-small`, and `SentenceTransformer` with PyTorch) which consume **1.2GB - 1.5GB of RAM** on startup. This causes Out-Of-Memory (OOM) crashes in environments with memory limits like Render's free tier (512MB RAM).

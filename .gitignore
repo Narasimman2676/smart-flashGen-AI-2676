@@ -48,6 +48,7 @@ frontend/local/
 .env.production.local
 frontend/.env
 frontend/.env.local
+!frontend/.env.production
 backend/.env
 
 # IDEs and Editors
