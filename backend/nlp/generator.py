@@ -1,9 +1,6 @@
 import os
 import re
 import numpy as np
-import torch
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-from sentence_transformers import SentenceTransformer
 from backend.database.db import db_session
 from backend.models.document import UploadedDocument
 from backend.models.flashcard import Flashcard
@@ -19,11 +16,15 @@ _similarity_model = None
 def get_t5_models():
     """Lazy load tokenizer and model for T5-small, returning None on failure."""
     global _t5_tokenizer, _t5_model
+    if os.getenv("LOW_MEMORY_MODE", "False").lower() == "true":
+        return None, None
+    local_only = os.getenv("HF_LOCAL_FILES_ONLY", "False").lower() == "true"
     if _t5_model is None:
         model_name = "t5-small"
         try:
-            _t5_tokenizer = AutoTokenizer.from_pretrained(model_name, local_files_only=True)
-            _t5_model = AutoModelForSeq2SeqLM.from_pretrained(model_name, local_files_only=True)
+            from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+            _t5_tokenizer = AutoTokenizer.from_pretrained(model_name, local_files_only=local_only)
+            _t5_model = AutoModelForSeq2SeqLM.from_pretrained(model_name, local_files_only=local_only)
         except Exception:
             _t5_tokenizer = None
             _t5_model = None
@@ -32,9 +33,13 @@ def get_t5_models():
 def get_similarity_model():
     """Lazy load SentenceTransformer model, returning None on failure."""
     global _similarity_model
+    if os.getenv("LOW_MEMORY_MODE", "False").lower() == "true":
+        return None
+    local_only = os.getenv("HF_LOCAL_FILES_ONLY", "False").lower() == "true"
     if _similarity_model is None:
         try:
-            _similarity_model = SentenceTransformer("all-MiniLM-L6-v2", local_files_only=True)
+            from sentence_transformers import SentenceTransformer
+            _similarity_model = SentenceTransformer("all-MiniLM-L6-v2", local_files_only=local_only)
         except Exception:
             _similarity_model = None
     return _similarity_model
@@ -149,6 +154,7 @@ def deduplicate_flashcards(candidates, similarity_threshold=0.85):
     try:
         if sim_model is None:
             raise RuntimeError("Similarity model unavailable")
+        import torch
         embeddings = sim_model.encode(questions, convert_to_tensor=True)
         # Compute cosine similarity matrix
         # (normalized embeddings matrix multiplication yields cosine similarity)

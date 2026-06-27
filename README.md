@@ -148,6 +148,31 @@ flash-generator/
 
 ---
 
+### ⚙️ Low-Memory Deployment Optimization (e.g. Render.com Free Tier)
+
+By default, the backend loads heavy Natural Language Processing models (like `KeyBERT`, `t5-small`, and `SentenceTransformer` with PyTorch) which consume **1.2GB - 1.5GB of RAM** on startup. This causes Out-Of-Memory (OOM) crashes in environments with memory limits like Render's free tier (512MB RAM).
+
+To resolve this, the codebase includes an optimized low-memory execution path that uses lightweight, built-in python fallbacks (NLTK and Regex algorithms) that consume **under 100MB of RAM**.
+
+To enable low-memory optimization, set the environment variable:
+```bash
+LOW_MEMORY_MODE=True
+```
+
+#### Run in Low-Memory Mode Locally:
+- **On Windows (PowerShell):**
+  ```powershell
+  $env:LOW_MEMORY_MODE="True"
+  python run.py
+  ```
+- **On macOS/Linux:**
+  ```bash
+  export LOW_MEMORY_MODE=True
+  python run.py
+  ```
+
+---
+
 ## 🔌 API Endpoints
 
 All backend API routes are prefixed with `/api` and are structured as follows:

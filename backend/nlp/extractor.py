@@ -2,7 +2,6 @@ import os
 import re
 import nltk
 import spacy
-from keybert import KeyBERT
 from backend.database.db import db_session
 from backend.models.document import UploadedDocument
 from backend.models.keyword import Keyword
@@ -27,6 +26,11 @@ init_nltk()
 # Load spaCy model dynamically
 def get_spacy_nlp():
     """Load a spaCy model if available; otherwise fall back to a blank English pipeline."""
+    if os.getenv("LOW_MEMORY_MODE", "False").lower() == "true":
+        try:
+            return spacy.blank("en")
+        except Exception:
+            return None
     try:
         return spacy.load("en_core_web_sm")
     except Exception:
@@ -43,8 +47,11 @@ _kw_model = None
 def get_keybert_model():
     """Get or initialize the KeyBERT model, returning None on failure."""
     global _kw_model
+    if os.getenv("LOW_MEMORY_MODE", "False").lower() == "true":
+        return None
     if _kw_model is None:
         try:
+            from keybert import KeyBERT
             _kw_model = KeyBERT()
         except Exception:
             _kw_model = None

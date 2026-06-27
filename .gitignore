@@ -20,12 +20,14 @@ htmlcov/
 *.db
 *.sqlite3
 backend/flashcards.db
+backend/tests/*.db
 
 # Uploads and temporary files
 backend/uploads/*
 !backend/uploads/.gitkeep
 tmp_uploads/
 uploads/
+backend/tests/test_gen_uploads/
 
 # Node / Frontend
 node_modules/
@@ -46,6 +48,7 @@ frontend/local/
 .env.production.local
 frontend/.env
 frontend/.env.local
+backend/.env
 
 # IDEs and Editors
 .vscode/
